@@ -15,12 +15,22 @@ import { quoteLoaderFn } from "./pages/QuoteDetailPage";
 import Comments from "./components/Comments";
 import Loading from "./components/Loading";
 
-const MainLayout = lazy(() => import("./layout/MainLayout"));
+import MainLayout from "./layout/MainLayout";
+
+//const MainLayout = lazy(() => import("./layout/MainLayout"));
 const QuotesPage = lazy(() => import("./pages/QuotesPage"));
 const NewQuotePage = lazy(() => import("./pages/NewQuotePage"));
 const EditQuotePage = lazy(() => import("./pages/EditQuotePage"));
 const QuoteDetailPage = lazy(() => import("./pages/QuoteDetailPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+
+const Layout = ({children}) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      {children}
+    </Suspense>
+    )
+}
 
 export default function App() {
   const dispatch = useDispatch();
@@ -50,20 +60,20 @@ export default function App() {
   
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
-      <Route index element={<Navigate to="/quotes" />} />
-      <Route path="/quotes" element={<QuotesPage loading={loading} />} />
-      <Route path="/quotes/:id/" element={<QuoteDetailPage />} loader={quoteLoaderFn} >
-        <Route path="comments" element={<Comments />} loader={quoteLoaderFn} />
+      <Route index element={<Layout><Navigate to="/quotes" /></Layout>} />
+      <Route path="/quotes" element={<Layout><QuotesPage loading={loading} /></Layout>} />
+      <Route path="/quotes/:id/" element={<Layout><QuoteDetailPage /></Layout>} loader={quoteLoaderFn} >
+        <Route path="comments" element={<Layout><Comments /></Layout>} loader={quoteLoaderFn} />
       </Route>
-      <Route path="/new-quote" element={<NewQuotePage />} />
-      <Route path="/edit-quote/:id" element={<EditQuotePage />} loader={quoteLoaderFn} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/new-quote" element={<Layout><NewQuotePage /></Layout>} />
+      <Route path="/edit-quote/:id" element={<Layout><EditQuotePage /></Layout>} loader={quoteLoaderFn} />
+      <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
     </Route>
   ))
   
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <RouterProvider router={router} />
-    </Suspense>
+    </>
   )
 }
