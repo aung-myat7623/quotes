@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Latest version of Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+
+
+.active {
+  @apply border-b-2 border-green-900;
+}
+
+.btn {
+  @apply inline-block text-white font-bold rounded m-1 p-2;
+}
+
+.input {
+  @apply bg-stone-100 p-2 min-w-[70%] my-2 rounded;
+}
+
+.input-error {
+  @apply bg-red-100 p-2 min-w-[70%] my-2 rounded;
+}
+
+.center {
+  @apply flex justify-center items-center;
+}
